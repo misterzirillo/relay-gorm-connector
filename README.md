@@ -1,4 +1,4 @@
-# relay-gorm-connector
+# relay-gorm-connector Grails 3 plugin
 
 ## Capabilities
 The purpose of this plugin is to easily translate Grails ORM domain classes into a GrahphQL schema that is compatible
@@ -17,6 +17,9 @@ There are some unsupported GraphQL features still. Here they are in order of des
 2. Custom Union and Interface GraphQL types
 3. Relay2 support. Relay2 is still in the pipes at Facebook but we will have a new library soon. Due to this plugin's
 dependency on `graphql-java` some upstream work may be necessary as well.
+
+## Grails 2.x
+For the Grails 2.x version of this plugin, see [Grails2 branch](../../tree/grails2)
 
 ## Getting Started
 ### Requirements
@@ -42,7 +45,7 @@ dependencies {
 }
 ```
 
-### Creating a Type
+### Creating a Domain Graphql Type
 Marking your domain classes to be used with GraphQL is easy. A GraphQL type will be created for any classes in the
 ./grails-app/domains source root that has the `@RelayType` annotation. Fields on the domain class that are accessible
 to GraphQL are marked with the `@RelayField` annotation.
@@ -73,6 +76,16 @@ annotated with `@RelayField`. The types are as follows:
 4. `BigDecimal`
 5. `List<@RelayType>`
 6. Any other `@RelayType`
+
+### Creating Graphql Artifacts 
+It's not always desirable to map Domain classes directly to the Graphql output. 
+
+You are able to define your Graphql artifacts either by annotating Domain classes (see above),
+or "Graphql" Classes in the grails-app/graphql directory. This way, you are able to decouple Domain classes from their 
+Graphql representation. 
+```
+grails create-graphql <my.package.artifactname>
+```
 
 ## Usage
 Because this plugin is designed to support Relay, the Relay node interface is automatically implemented by every type
@@ -414,4 +427,4 @@ static class AddFriendMutation implements DataFetcher {
 Note that the DataFetcher returns an object whose structure mimics what was defined by `type`.
 
 <b>Pro tip:</b> Adding as much code as we've written above to a simple domain class can seriously clutter your code.
-Move these static fields to a Groovy `trait` instead.
+Move these static fields to a Groovy `trait` instead, or create a Graphql artifact instead.
